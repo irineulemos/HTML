@@ -1,0 +1,13 @@
+div{
+	width: 10px;
+	height: 10px;
+	border-color: red;
+	border-width: 12px;
+}
+.tabela{
+	border-width: 5px;
+	border-color: blue;
+}
+.titulo{
+	background: lightgreen;
+}
