@@ -3,11 +3,32 @@ div{
 	height: 10px;
 	border-color: red;
 	border-width: 12px;
-}
-.tabela{
-	border-width: 5px;
-	border-color: blue;
+	color: red;
 }
 .titulo{
 	background: lightgreen;
+}
+.avatar{
+	width: 95px;
+	height: 155px;
+}
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+table{
+	background: #F8F8FF;
+}
+td{
+	max-width: 500px;
+}
+.avatar:hover{
+	width: 130px;
+	height: 190px;
+	transform: rotate(180deg);
+}
+.importante{
+	background: #FA8072;
+	font-family: "Comic Sans MS";
+	font-style: italic;
 }
