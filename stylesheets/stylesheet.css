@@ -652,6 +652,31 @@ a.code:hover {
   opacity: 1;
   filter:alpha(opacity=100);
 }
+a.voltar-button {
+  border: 1px solid black;
+  border-radius: 3px;
+  display: inline-block;
+  text-indent: 0!important;
+  width: auto;
+  background: #999; /* for non-css3 browsers */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#37ADD4', endColorstr='#1B657E'); /* IE <= 9 */
+  background: -webkit-gradient(linear, left top, left bottom, from(#37ADD4), to(#1B657E)); /* ancient webkit browsers */
+  background: -webkit-linear-gradient(top,  #37ADD4,  #1B657E);  /* Safari <=6.1, Android <= 4.3 */
+  background: linear-gradient(to bottom,  #37ADD4,  #1B657E);
+  height: auto;
+  margin-left: 10px;
+}
+
+a.voltar-button span {
+  background-position: 10px 5px;
+  width: auto;
+  height: auto;
+  padding: 5px 10px;
+  padding-left: 45px;
+  display: inline-block;
+  text-indent: 0!important;
+  color: #fff;
+}
 
 a.download-button {
   border: 1px solid black;
