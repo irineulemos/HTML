@@ -33,7 +33,7 @@ article,
 aside,
 details,
 figcaption,
-figure,
+figure,v
 footer,
 header,
 hgroup,
@@ -671,8 +671,8 @@ a.voltar-button span {
   background-position: 10px 5px;
   width: auto;
   height: auto;
-  padding: 5px 10px;
-  padding-left: 45px;
+  padding: 5px 10px; 
+  /*padding-left: 45px;*/
   display: inline-block;
   text-indent: 0!important;
   color: #fff;
