@@ -89,7 +89,8 @@ function Loop()
     context.beginPath();
     context.arc(bolaPosX, bolaPosY, bolaDiametro, 0, Math.PI * 2, true);
     context.fill();
-    
+   
+   //desenha o placar 
     context.font = "32pt Comic Sans MS";
     context.fillText(pontos, canvas.width - 70, 50);
     
