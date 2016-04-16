@@ -1,10 +1,3 @@
-div{
-	width: 10px;
-	height: 10px;
-	border-color: red;
-	border-width: 12px;
-	color: red;
-}
 .titulo{
 	background: lightgreen;
 }
@@ -31,4 +24,16 @@ td{
 	background: #FA8072;
 	font-family: "Comic Sans MS";
 	font-style: italic;
+}
+.botao-calculadora {
+  border-radius: 3px;
+  display: inline-block;
+  width: 100%;
+  height: auto;
+}
+canvas {
+        border: 1px solid #000000;       
+}
+.div01{
+    display: block;
 }
