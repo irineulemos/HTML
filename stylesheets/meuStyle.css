@@ -34,6 +34,10 @@ td{
 canvas {
         border: 1px solid #000000;       
 }
-.div01{
-    display: block;
+#mapa{
+    width: 800px;
+	height: 600px;
+	align-content: center;
+	border: 3px solid black;
+	
 }

@@ -1,3 +1,4 @@
+//atividade 03
 function disp(num) {
     document.getElementById("display").value += num;
 }
@@ -8,6 +9,47 @@ function LimpaDisp() {
 
 var barraAltura, barraComprimento, barraPosX, velocidadeMovimento, bolaDiametro, bolaPosX, bolaPosY, velocidadeBola, pontos, acerto;
 
+//atividade 04
+function initMap() {
+    var mymap = L.map('mapa');
+    var inicial = [-20.35594,-40.29895];  // inicio na UVV.
+    
+    mymap.setView(inicial, 15);
+    
+    //adiciona uma marcação inicial
+    var marcador = L.marker(inicial, {draggable:true,  riseOnHover:true}).addTo(mymap);
+    
+    var msgPopupUVV = '<span>você está na uvv</span>';
+    var msgPopupShopping = '<span>você está no shopping</span>';
+   
+  L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+        maxZoom: 18,
+        id: 'your.mapbox.project.id',
+        accessToken: 'your.mapbox.public.access.token'
+    }).addTo(mymap);
+
+/*demarca a uvv*/
+var pUvv = L.polygon([
+    [-20.35594,-40.29895],
+    [-20.35492,-40.29776],
+    [-20.35279,-40.2989], 
+    [-20.35382,-40.3003]
+]).addTo(mymap);
+
+/*demarca a uvv*/
+var pShopping = L.polygon([
+    [-20.350178, -40.298376],
+    [-20.353447, -40.296101],
+    [-20.354423, -40.297313],
+    [-20.351137, -40.299508] 
+],{color:'orange'}).addTo(mymap);
+
+var popupUvv = L.popup().setContent('<b>uvv</b>');
+
+}
+
+//atividade 05
 function initCanvas() {
     barraAltura = 15;
     barraComprimento = 100;
@@ -97,3 +139,4 @@ function Loop()
     //redesenha a barra
     context.fillRect(barraPosX, canvas.height - barraAltura, barraComprimento, barraAltura);
 }
+
