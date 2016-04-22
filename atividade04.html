@@ -1,24 +1,89 @@
-<!DOCTYPE html>
 <html>
 <head>
-	<link rel="stylesheet" type="text/css" href="stylesheets/meuStyle.css">
-	<link rel="stylesheet" href="stylesheets/stylesheet.css" media="screen">
-	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
-    
-    <script src="javascripts/meusScripts.js"> </script>
-    <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
-  
-    
-	<title>Atividade 04</title>
-</head>
-<body onload="initMap()" >	
-	<center> 
-        <div id="mapa">            
-        </div>
-              
-        <div>
+      <meta charset="utf-8">
+      <title>Atividade 04</title>
+      <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+	  <link rel="stylesheet" href="stylesheets/stylesheet.css" media="screen">
+	  
+      <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+</head> 
+<body> 
+
+<center> 
+	
+	<div id="map" border="2" style="width: 800px; height: 600px;align-content: center;border: 3px solid black;" ></div> 
+
+	<div>
+            <br><br>
             <a href="index.html" class="voltar-button" ><span>Voltar</span></a>
-        </div>
-    </center>
+     </div>
+
+
+</center>
+
+
+<script language="JavaScript"> //monstagem do mapa
+  
+	document.onkeypress=function(e){
+	if(e.which == 32){
+	var marcador = L.marker(xLatLong,{draggable:true});
+	marcador.addTo(map);
+	}     
+	marcador.on("dragend",function(){ alert(marcador.getLatLng()); }); 
+	}
+ 
+</script>
+
+
+<script>  /* Inicialização */
+	var map = L.map('map');
+	var inicial = [-20.35500,-40.29895];  /* UVV */
+	map.setView(inicial,15);
+	
+    var marcador = L.marker(inicial,{draggable:true, riseOnHover:true} );
+    marcador.addTo(map);
+	
+	var quadriLatLng = [
+            [-20.350178, -40.298376],
+            [-20.353447, -40.296101],
+            [-20.354423, -40.297313],
+            [-20.351137, -40.299508] ]  
+    var pShopVV = L.polygon(quadriLatLng,{color:'orange'});
+    pShopVV.addTo(map);
+	
+	var popupShopVV = L.popup().setContent('<img src="images/shoppingvilavelha.jpg" width="250" height=175"><br><b>Shopping Vila Velha</b>');
+	
+	
+	   		
+	var camadaDeImagem = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png');
+	camadaDeImagem.addTo(map);
+	var pUvv = [[-20.35594,-40.29895], 
+				[-20.35492,-40.29776],
+				[-20.35279,-40.2989],
+				[-20.35382,-40.3003] ];
+	
+	var ponto1 = L.polygon(pUvv,{color:'blue'}); 
+	ponto1.addTo(map);
+	var popup1 = L.popup().setContent('<img src="images/uvv.jpg" width="250" height=175"><br><b>UVV</b>');
+	
+	 marcador.on("dragend",function(ev){
+	            var chagedPoslat = ev.target.getLatLng().lat;
+				var chagedPoslng = ev.target.getLatLng().lng;			
+								                        
+	            if ( chagedPoslat < -20.351137 && chagedPoslat > -20.354423 && chagedPoslng > -40.299508 && chagedPoslng < -40.296101  )
+				{                     
+					this.bindPopup( '<img src="images/shoppingvilavelha.jpg" width="250" height=175"><br><b>Shopping Vila Velha</b>'  ).openPopup();
+				} // if
+		
+				if ( chagedPoslat < -20.35279 && chagedPoslat > -20.35594 && chagedPoslng > -40.3003 && chagedPoslng < -40.29776  )
+				{                     
+					this.bindPopup( '<img src="images/uvv.jpg" width="250" height=175"><br><b>Universidade Vila Velha</b>'  ).openPopup();
+				} // if2
+				
+	}); 
+    
+	
+</script>
+
 </body>
 </html>
