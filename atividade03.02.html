@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="stylesheets/meuStyle.css">
+    <link rel="stylesheet" href="stylesheets/stylesheet.css" media="screen">
+
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+    <script src="javascripts/atividade03.02.js"></script>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <title>Atividade 03 do 2º bimestre</title>
+</head>
+
+<body ng-app="myApp">
+    <div ng-controller="atividade06Ctrl">
+        <center>
+            <div><br> <span class="importante">Use as teclas da direita e esquerda no teclado para movimentar a barra.</span><br><br>                </div>
+            <div class="jogo">
+                <canvas id="canvas" width="600" height="480">
+                Navegador não suporta HTML5
+            </canvas>
+
+            </div>
+            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+            <div class="pontuacao">
+                Rank Atual:
+                <div ng-repeat="item in usuariosRank track by $index">
+                    {{item.nick}} - {{item.pontuacao}}
+                </div>
+                <div>
+                    <button>Resetar </button>
+                </div>
+            </div>
+            <p></p>
+            <p></p>
+            <div>
+                <a href="index.html" class="voltar-button"><span>Voltar</span></a>
+            </div>
+        </center>
+    </div>
+</body>
+
+</html>

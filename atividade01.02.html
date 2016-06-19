@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="stylesheets/meuStyle.css">
+    <link rel="stylesheet" href="stylesheets/stylesheet.css" media="screen">
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <title>Atividade 01 do 2º bimestre</title>
+</head>
+
+<body>
+    <p>
+    <div>
+        <center>
+            <div id="player">
+            </div>
+            
+            <div>
+                <button onclick="relatorio()">Exibir Relatório</button>
+                <p>
+                <div id="dados" class="estatistica">
+                    <p>                   
+                    <label id="tempoReproducao"> Tempo em Reprodução: 00:00:00</label> <br>
+                    <label id="tempoPausado"> Tempo em Pausa: 00:00:00</label> <br>
+                    <label id="numPlay">  Total de vezes Reproduzido: 0 </label> <br>
+                    <label id="numPausas"> Total de Pausas: 0 </label><br>
+                    <label id="volume"> Volume alterado em: </label>
+                </div>
+            </div>
+            <p></p>
+            <p></p>
+            <div>
+                <a href="index.html" class="voltar-button"><span>Voltar</span></a>
+            </div>
+        </center>
+    </div>
+    <script>
+	    	var tag = document.createElement("script");
+
+              //zera os segundos do cronometro como valor inicial
+        var cronometroSegundos = -1; 
+        var cronometroMinutos = 0;
+        var cronometroHora = 0;
+        var cronometroInterval = 0;
+        var pausado = false;
+        var execucao = false;
+
+        var cronometroSegundosPausado = 0; 
+        var cronometroMinutosPausado = 0;
+        var cronometroHoraPausado = 0;
+        var cronometroIntervalPausado = 0;
+        var qtdPausas = 0;
+        var qtdPlay = -1;
+        var volume = 100;
+        var cronometroVolume = 0;
+
+		tag.src = "https://www.youtube.com/iframe_api";
+		var firstScriptTag = document.getElementsByTagName('script')[0];
+		firstScriptTag.parentNode.insertBefore(tag,firstScriptTag);
+		
+		var player;
+		function onYouTubeIframeAPIReady(){
+			player = new YT.Player('player',{
+				height:"390",
+				width:"640",
+				videoId:"JFnWGEDZGBk",
+				events:{
+					'onReady':onPlayerReady,
+					'onStateChange':onPlayerStateChange
+				}			
+			});
+		}
+		
+		function onPlayerReady(event){
+			player.playVideo();
+            volume = player.getVolume();
+            execucao = true;
+            //inicia o cronometro e chama a função a cada 1 segundo
+                cronometroInterval = setInterval(geraCronometro, 1000);
+
+                cronometroVolume = setInterval(function () {
+                    if (volume != player.getVolume()){
+                        var data = new Date();
+                        volume = player.getVolume();
+                        document.getElementById('volume').innerHTML = ("Volume alterado em: " + data.getHours() + ":" + data.getMinutes() + ':' + data.getSeconds());                        
+                    }                                   
+                }, 500);
+
+		}
+		function onPlayerStateChange(event){
+		    switch(event.data) {
+                //video encerrado
+                case 0:
+                    execucao = false;  
+                    pausado = false;
+                    qtdPlay = qtdPlay - 1;        
+                break;
+                //video em reprodução
+                case 1:
+                    qtdPlay++;  
+                    execucao = true;  
+                    pausado = false;
+
+                    document.getElementById('numPlay').innerHTML = ("Total de vezes Reproduzido: " + qtdPlay);                    
+                break;
+                //video em pausa
+                case 2:                
+                    qtdPausas++;  
+                    execucao = false;  
+                    pausado = true;
+                 
+                    document.getElementById('numPausas').innerHTML = ("Total de Pausas: " + qtdPausas);                                
+                break;                
+        }
+	}
+
+    //função para resetar o cronometro
+        function limpaCronometro() {
+            //reseta o intervalo do cronometro
+            clearInterval(cronometroInterval);
+
+            //reseta as variaveis
+              cronometroSegundos = -1; 
+              cronometroMinutos = 0;
+              cronometroHora = 0;
+              cronometroInterval = 0;
+            pausado = false;
+            execucao = false;
+
+            cronometroSegundosPausado = 0; 
+            cronometroMinutosPausado = 0;
+            cronometroHoraPausado = 0;
+            cronometroIntervalPausado = 0;           
+        };
+
+        function geraCronometro() {
+                    //faz a contagem do cronometro
+                    var hr = '', min = '', segs = '';
+                    var hrPausado = '', minPausado = '', segsPausado = '';             
+
+                    if (execucao){
+                    //adiciona os segundos
+                    cronometroSegundos++;
+
+                    // faz a contagem de minutos, adiciona um minuto a cada 60 segundos e zera os segundos
+                    if (cronometroSegundos == 60) {
+                        cronometroMinutos++;
+                        cronometroSegundos = 0;
+                    }
+
+                    // faz a contagem de minutos, adiciona um minuto a cada 60 segundos e zera os segundos
+                    if (cronometroMinutos == 60) {
+                        cronometroHora++;
+                        cronometroMinutos = 0;
+                    }                   
+
+                    //faz a formatação do tempo de como irá aparecer na tela            
+                    if (cronometroHora < 10) { hr = "0" + cronometroHora } else { hr = cronometroHora };
+                    if (cronometroMinutos < 10) { min = "0" + cronometroMinutos } else { min = cronometroMinutos };
+                    if (cronometroSegundos < 10) { segs = "0" + cronometroSegundos } else { segs = cronometroSegundos };
+
+                   
+                    //preeche a variavel de escopo com o valor do cronometro
+                      document.getElementById('tempoReproducao').innerHTML = ("Tempo em Reprodução: "+ hr + ":" + min + ":" + segs);
+                    }
+
+                    if (pausado){
+                    //adiciona os segundos
+                    cronometroSegundosPausado++;
+
+                    // faz a contagem de minutos, adiciona um minuto a cada 60 segundos e zera os segundos
+                    if (cronometroSegundosPausado == 60) {
+                        cronometroMinutosPausado++;
+                        cronometroSegundosPausado = 0;
+                    }
+
+                    // faz a contagem de minutos, adiciona um minuto a cada 60 segundos e zera os segundos
+                    if (cronometroMinutosPausado == 60) {
+                        cronometroHoraPausado++;
+                        cronometroMinutosPausado = 0;
+                    }
+
+                    //faz a formatação do tempo de como irá aparecer na tela            
+                    if (cronometroHoraPausado < 10) { hrPausado = "0" + cronometroHoraPausado } else { hrPausado = cronometroHoraPausado };
+                    if (cronometroMinutosPausado < 10) { minPausado = "0" + cronometroMinutosPausado } else { minPausado = cronometroMinutosPausado };
+                    if (cronometroSegundosPausado < 10) { segsPausado = "0" + cronometroSegundosPausado } else { segsPausado = cronometroSegundosPausado };
+
+                   
+                    //preeche a variavel de escopo com o valor do cronometro
+                      document.getElementById('tempoPausado').innerHTML = ("Tempo em Pausa: "+ hrPausado + ":" + minPausado + ":" + segsPausado);
+                    }
+                    
+                }
+
+     
+
+       function relatorio() {
+        var display = document.getElementById('dados').style.display;
+
+        if((display == "none") || (display == "")){
+            document.getElementById('dados').style.display = 'block';
+        }
+        else{
+            document.getElementById('dados').style.display = 'none';
+        }        
+       }
+
+       
+
+	</script>
+
+</body>
+
+</html>
