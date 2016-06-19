@@ -26,7 +26,6 @@ angular.module('myApp', [])
             velocidadeBola = 7;
 
             acerto = false;
-            //window.localStorage.removeItem(storage);
             rank = window.localStorage.getItem(storage);
 
             //extrai o rank do localstorage
@@ -38,8 +37,8 @@ angular.module('myApp', [])
 
             jogador.nick = nickname;
             jogador.pontuacao = 0;
-            adicionaJogador();
-            
+            jogador.id = parseInt(Math.random() * 10000);        
+
             //centraliza
             barraPosX = (canvas.width - barraComprimento) / 2;
 
@@ -78,9 +77,7 @@ angular.module('myApp', [])
         //faz com que a barra seja desenhada sempre com a nova posição
         function Loop() {
             //verifica se a barra acertou a bola
-            if (((bolaPosX > barraPosX) && (bolaPosX < (barraPosX + barraComprimento))) && (bolaPosY >= (canvas.height - barraAltura)) && acerto == false) {
-                //pontos++;
-                //jogador.pontuacao = pontos;
+            if (((bolaPosX > barraPosX) && (bolaPosX < (barraPosX + barraComprimento))) && (bolaPosY >= (canvas.height - barraAltura)) && acerto == false) {              
                 jogador.pontuacao++;
                 adicionaJogador();
                 acerto = true;
@@ -114,24 +111,42 @@ angular.module('myApp', [])
 
         function adicionaJogador() {
             var i = 0;
+            var cont = 0;
             var rankAux = [];
-            var adicionado = false;
-            
-            while (i < 11) {
-                if ($scope.usuariosRank[i] == jogador) {
-                   adicionado = true;
-                   
+            var adicionar = false;
+
+            //adiciona o jogador e preeche os locais vazios se não tiver rank
+            if ($scope.usuariosRank.length < 10) {
+                cont = $scope.usuariosRank.length;
+                rankAux = $scope.usuariosRank;
+                while (cont < 10) {
+                    rankAux[cont] = { nick: '', pontuacao: 0 };
+                    cont++;
                 }
-                rankAux[i] = {nick : '', pontuacao:0}
-                i++;
-            }
-            if(!adicionado){
-                 rankAux[i]  = jogador;
+                rankAux[cont - 1] = jogador;
+            } else {
+                rankAux = $scope.usuariosRank;
+                while (i < 10) {
+                    if (rankAux[i].pontuacao < jogador.pontuacao) {
+                        //se for o mesmo jogador atualiza o cadastro dele
+                        if (rankAux[i].id == jogador.id) {
+                            rankAux[i] = jogador;
+                            adicionar = false;
+                        } else {
+                            adicionar = true;
+                        }
+                    }
+
+                    i++;
+                }
+                if (adicionar) {
+                    rankAux[i - 1] = jogador;
+                }
             }
 
-
+            //organiza o rank
             rankAux = rankAux.sort(function compare(a, b) {
-                if (!a ) {
+                if (!a) {
                     return 1;
                 }
                 if (!b) {
@@ -146,9 +161,7 @@ angular.module('myApp', [])
                 // são idênticos
                 return 0;
             });
-
-            rankAux.pop();
-            
+            //atualiza a lista do rank e storage
             $scope.usuariosRank = rankAux;
             atualizaStorage();
 
@@ -166,75 +179,16 @@ angular.module('myApp', [])
                 this.$apply(fn);
             }
         };
-        /*
-		function pontuacaoMaior() {
-			var numJogadores = $scope.usuariosRank.length;
-			var contador = 0;
 
-			//se possuir jogadores analisa o rank se não adiciona direto no rank
-			if (numJogadores > 0) {
-				if (numJogadores < 10) {
-					adicionaJogadorRank();
-				} else {					
-					while (contador < numJogadores) {
-						//se o jogador tiver maior pontuação faz a troca no rank
-						if (jogador.pontuacao > $scope.usuariosRank[contador].pontuacao) {
-							trocaPosicao(contador);
-							atualizaStorage();
-						}
-						contador++;
-					}
-				}
-			} else {
-				adicionaJogadorRank();
-			}
-
-		}
-
-		//função para realizar a troca de posições do rank
-		function trocaPosicao(posicao) {
-			var cont = posicao;
-			var troca = 0;
-			var aux = {};
-			var aux2 = {};
-
-			while (cont < $scope.usuariosRank.length) {
-				if (troca == 0) {
-					aux = $scope.usuariosRank[cont];
-					$scope.usuariosRank[cont] = jogador;
-					troca = 1;
-				} else {
-					//guarda o valor do proximo objeto
-					aux2 = $scope.usuariosRank[cont];
-					//substitui o valor do objeto atual pelo valor do objeto antigo
-					$scope.usuariosRank[cont] = aux;
-					//guarda o valor do próximo objeto para a próxima iteração
-					aux = aux2;
-				}
-				cont++;
-			}
-		}
-
-		//função para adicionar um jogador ao rank
-		function adicionaJogadorRank() {
-			$scope.usuariosRank.push(jogador);
-			//organiza do maior para o menor
-			$scope.usuariosRank.sort(function compare(a, b) {
-				if (a.pontuacao < b.pontuacao) {
-					return 1;
-				}
-				if (a.pontuacao > b.pontuacao) {
-					return -1;
-				}
-				// são idênticos
-				return 0;
-			});
-			atualizaStorage();
-		}
-*/
         //função para atualizar o webstorage
         function atualizaStorage() {
             window.localStorage.setItem(storage, JSON.stringify($scope.usuariosRank));
+            $scope.safeApply();
+        }
+
+        $scope.resetarRank = function () {
+            window.localStorage.removeItem(storage);
+            $scope.usuariosRank = [];
             $scope.safeApply();
         }
 
